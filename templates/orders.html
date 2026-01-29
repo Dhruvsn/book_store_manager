@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">My Order History</h2>
+    
+    {% if orders %}
+        {% for order in orders %}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <span><strong>Order #{{ order.id }}</strong></span>
+                <span class="badge bg-success">{{ order.status }}</span>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    <strong>Books Purchased:</strong><br>
+                    <span class="text-muted">{{ order.book_list|join(', ') }}</span>
+                </p>
+                <p class="card-text">
+                    <strong>Total Paid:</strong> 
+                    <span class="text-primary fw-bold">${{ "%.2f"|format(order.total) }}</span>
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-light border">
+            <p class="mb-0">You haven't placed any orders yet. <a href="/">Browse our books!</a></p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

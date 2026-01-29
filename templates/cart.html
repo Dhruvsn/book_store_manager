@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %}
+<h2>Your Cart</h2>
+{% if items %}
+<ul class="list-group mb-3">
+  {% for item in items %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    {{ item.title }} <span>${{ item.price }}</span>
+  </li>
+  {% endfor %}
+  <li class="list-group-item active d-flex justify-content-between">
+    <strong>Total</strong> <strong>${{ total }}</strong>
+  </li>
+</ul>
+<form action="{{ url_for('place_order') }}" method="POST">
+  <button type="submit" class="btn btn-primary btn-lg w-100">
+    Confirm and Place Order
+  </button>
+</form>
+{% else %}
+<p>Your cart is empty. <a href="/">Go shopping!</a></p>
+{% endif %} {% endblock %}

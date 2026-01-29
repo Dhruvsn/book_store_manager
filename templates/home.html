@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block content %}
+<div class="p-5 mb-4 bg-white border rounded-3 shadow-sm">
+  <div class="container-fluid py-5 text-center">
+    <h1 class="display-4 fw-bold">Comprehensive E-commerce for Books</h1>
+    <p class="fs-4 text-muted">
+      A secure platform to explore technical literature, manage orders, and
+      master your library inventory.
+    </p>
+    <hr class="my-4" />
+    <div class="d-flex justify-content-center gap-3">
+      <a href="/shop" class="btn btn-primary btn-lg px-4">Start Shopping</a>
+      {% if not session.user_id %}
+      <a href="/register" class="btn btn-outline-dark btn-lg px-4"
+        >Create an Account</a
+      >
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 py-5 row-cols-1 row-cols-lg-3 text-center">
+  <div class="col">
+    <div class="p-4 border bg-white h-100 rounded shadow-sm">
+      <div class="mb-3 fs-1">📦</div>
+      <h3>Inventory Management</h3>
+      <p>
+        Admin dashboard to track stock levels and add new titles to the catalog
+        in real-time.
+      </p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="p-4 border bg-white h-100 rounded shadow-sm">
+      <div class="mb-3 fs-1">💳</div>
+      <h3>Easy Ordering</h3>
+      <p>
+        Simple "Add to Cart" workflow with persistent session-based carts for
+        logged-in users.
+      </p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="p-4 border bg-white h-100 rounded shadow-sm">
+      <div class="mb-3 fs-1">🔒</div>
+      <h3>Secure Access</h3>
+      <p>
+        Authenticated user registration and hashed password security for all
+        customer data.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="bg-dark text-white rounded p-4 text-center">
+  <p class="mb-0">
+    Current Stats: <strong>{{ stats.book_count }}</strong> Books Available |
+    <strong>{{ stats.user_count }}</strong> Registered Users
+  </p>
+</div>
+{% endblock %}
