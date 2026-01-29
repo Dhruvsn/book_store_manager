@@ -127,6 +127,12 @@ def admin_dashboard():
     if not session.get('is_admin'): return "Access Denied", 403
     return render_template('admin.html', all_orders=orders.values(), all_books=books.values())
 
+@app.route('/admin/logout')
+def admin_logout():
+    session.clear() # Clears both 'username' and 'is_admin'
+    flash("Admin logged out successfully.")
+    return redirect(url_for('home'))
+
 @app.route('/admin/add_book', methods=['POST'])
 def add_book():
     if not session.get('is_admin'): return redirect(url_for('index'))
