@@ -43,8 +43,9 @@ BookStoreManager/
 **Install dependencies:**
 ```bash
 pip install -r requirements.txt
-
-Access: Open your browser to http://127.0.0.1:5000
+Run: python app.py // for local deployment
+Run : python aws_app.py // Run this command in EC2 instance on AWS.
+Access: Open your browser to http://127.0.0.1:5000 // for local access
 
 # Credentials & Access
 Default Admin: The admin account is pre-configured with the username admin and password admin123.
