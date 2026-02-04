@@ -10,7 +10,7 @@
         <p class="card-text text-primary fw-bold">${{ book.price }}</p>
         <p class="card-text"><small>Stock: {{ book.stock }}</small></p>
         <a
-          href="{{ url_for('add_to_cart', book_id=book.id) }}"
+          href="{{ url_for('add_to_cart', book_id=book.book_id) }}"
           class="btn btn-outline-dark w-100"
           >Add to Cart</a
         >
