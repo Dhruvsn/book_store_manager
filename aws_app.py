@@ -17,7 +17,7 @@ sns = boto3.client('sns', region_name='us-east-1')
 USER_TABLE = dynamodb.Table('Users')
 BOOK_TABLE = dynamodb.Table('Books')
 ORDER_TABLE = dynamodb.Table('Orders')
-SNS_TOPIC_ARN = 'your_sns_topic_arn_here' # Replace with your ARN
+SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:337909785197:bookStore_manager' # Replace with your ARN
 
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
