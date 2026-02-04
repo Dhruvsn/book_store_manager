@@ -17,7 +17,7 @@ sns = boto3.client('sns', region_name='us-east-1')
 USER_TABLE = dynamodb.Table('Users')
 BOOK_TABLE = dynamodb.Table('Books')
 ORDER_TABLE = dynamodb.Table('Orders')
-SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:337909785197:bookStore_manager' # Replace with your ARN
+SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:337909785197:bookStore_manager' 
 
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -54,25 +54,26 @@ def login():
         user = USER_TABLE.get_item(Key={'username': username}).get('Item')
         
         if user and check_password_hash(user['password'], password):
-            if user.get('role') == 'admin':
-                session['admin'] = username
+            session['username'] = username
+            session['is_admin'] = (user.get('role') == 'admin') # Standardized session key
+            
+            if session['is_admin']:
                 return redirect(url_for('admin_dashboard'))
-            else:
-                session['username'] = username
-                return redirect(url_for('index'))
+            return redirect(url_for('index'))
         flash("Invalid credentials!")
     return render_template('login.html')
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
+    session.clear() # Standardized logout
     flash("Logged out.")
     return redirect(url_for('home'))
 
 @app.route('/admin/logout')
 def admin_logout():
-    session.pop('admin', None)
-    flash("Admin logged out.")
+    # This is the single, unique logout function for admins
+    session.clear()
+    flash("Admin logged out safely.")
     return redirect(url_for('home'))
 
 # --- CUSTOMER STORE ROUTES ---
@@ -120,28 +121,30 @@ def place_order():
     })
     send_order_notification(username, total)
     session['cart'] = []
-    return redirect(url_for('home'))
+    flash("Order placed successfully!")
+    return redirect(url_for('my_orders'))
+
+@app.route('/my_orders')
+def my_orders():
+    if 'username' not in session: return redirect(url_for('login'))
+    username = session['username']
+    all_orders = ORDER_TABLE.scan().get('Items', [])
+    user_orders = [o for o in all_orders if o['username'] == username]
+    return render_template('orders.html', orders=user_orders)
 
 # --- ADMIN DASHBOARD ---
 
 @app.route('/admin')
 def admin_dashboard():
-    if 'admin' not in session: return redirect(url_for('login'))
+    if not session.get('is_admin'): return redirect(url_for('login'))
     all_orders = ORDER_TABLE.scan().get('Items', [])
     all_books = BOOK_TABLE.scan().get('Items', [])
     all_users = USER_TABLE.scan().get('Items', [])
     return render_template('admin.html', all_orders=all_orders, all_books=all_books, all_users=all_users)
 
-@app.route('/admin/logout')
-def admin_logout():
-    session.pop('is_admin', None)
-    session.pop('username', None)
-    flash("Admin session ended safely.")
-    return redirect(url_for('home'))
-
 @app.route('/admin/add_book', methods=['POST'])
 def admin_add_book():
-    if 'admin' not in session: return redirect(url_for('login'))
+    if not session.get('is_admin'): return redirect(url_for('login'))
     book_id = str(os.urandom(4).hex())
     image = request.files.get('image')
     filename = secure_filename(image.filename) if image else "default.jpg"

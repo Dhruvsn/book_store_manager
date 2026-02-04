@@ -3,7 +3,7 @@
   <div class="col-md-4">
     <div class="card p-4 shadow-sm border-0 mb-4">
       <h4 class="mb-3">Add New Book</h4>
-      <form action="{{ url_for('add_book') }}" method="POST">
+      <form action="{{ url_for('admin_add_book') }}" method="POST" enctype="multipart/form-data">
         <div class="mb-2">
           <label class="form-label small">Book Title</label>
           <input
@@ -24,7 +24,7 @@
             required
           />
         </div>
-        <div class="row mb-3">
+        <div class="row mb-2">
           <div class="col">
             <label class="form-label small">Price ($)</label>
             <input
@@ -47,6 +47,10 @@
             />
           </div>
         </div>
+        <div class="mb-3">
+          <label class="form-label small">Book Cover Image</label>
+          <input type="file" name="image" class="form-control form-control-sm" />
+        </div>
         <button type="submit" class="btn btn-dark w-100">
           Add to Inventory
         </button>
@@ -60,8 +64,8 @@
       <table class="table table-hover bg-white border shadow-sm">
         <thead class="table-dark">
           <tr>
-            <th>ID</th>
-            <th>User ID</th>
+            <th>Order ID</th>
+            <th>Customer</th>
             <th>Books</th>
             <th>Total</th>
             <th>Status</th>
@@ -70,8 +74,8 @@
         <tbody>
           {% for order in all_orders %}
           <tr>
-            <td>#{{ order.id }}</td>
-            <td>User {{ order.user_id }}</td>
+            <td>#{{ order.order_id }}</td>
+            <td>{{ order.username }}</td>
             <td>
               <small class="text-muted">{{ order.book_list|join(', ') }}</small>
             </td>
