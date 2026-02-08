@@ -1,0 +1,38 @@
+= Database Schema
+:toc: left
+
+== Introduction
+
+The application uses two different storage paradigms depending on the environment.
+
+== In-Memory Storage (`app.py`)
+
+Data is stored in nested dictionaries with integer primary keys.
+
+=== `users` dictionary
+* **Key**: User ID (integer)
+* **Value**: `{id: int, username: str, password: str (hashed), is_admin: bool}`
+
+=== `books` dictionary
+* **Key**: Book ID (integer)
+* **Value**: `{id: int, title: str, author: str, price: float, stock: int}`
+
+=== `orders` dictionary
+* **Key**: Order ID (integer)
+* **Value**: `{id: int, user_id: int, book_list: list[str], total: float, status: str}`
+
+== AWS DynamoDB Storage (`aws_app.py`)
+
+Tables are configured in the `us-east-1` region.
+
+=== Users Table
+* **Partition Key**: `username` (String)
+* **Attributes**: `password` (Hashed String), `role` (String: 'customer' or 'admin')
+
+=== Books Table
+* **Partition Key**: `book_id` (String - Hex)
+* **Attributes**: `title`, `author`, `price` (Decimal), `stock` (Int), `image` (String - Filename)
+
+=== Orders Table
+* **Partition Key**: `order_id` (String - Hex)
+* **Attributes**: `username`, `book_list` (List), `total` (Decimal), `status` (String)

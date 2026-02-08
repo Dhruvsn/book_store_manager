@@ -1,0 +1,54 @@
+= API & Routes Reference
+:toc: left
+
+== Introduction
+
+This document details all the Flask routes and endpoints available in the BookStore Manager application.
+
+== Common Endpoints
+
+These routes behave similarly in both `app.py` and `aws_app.py`.
+
+[cols="1,1,2,2"]
+|===
+| Route | Method | Description | Redirection/Target
+
+| `/` | GET | Landing page showing basic stats (in `app.py`) or welcome message. | `home.html`
+| `/shop` | GET | Main product catalog/storefront view. | `index.html`
+| `/login` | GET, POST | User authentication portal. Validates credentials and sets sessions. | `/admin` or `/`
+| `/logout` | GET | Clears the session and logs the user out. | `/`
+|===
+
+== Customer Operations
+
+[cols="1,1,3"]
+|===
+| Route | Method | Purpose
+
+| `/register` (Local) | GET, POST | Customer registration (In-Memory).
+| `/signup` (AWS) | GET, POST | Customer registration (DynamoDB).
+| `/add_to_cart/<id>` | GET | Adds a specific book to the user's session-based cart.
+| `/cart` (Local) | GET | View current shopping cart items and total.
+| `/place_order` | POST | Processes items in cart, creates order, and clears cart.
+| `/my_orders` | GET | Lists order history for the logged-in user.
+|===
+
+== Administrative Control
+
+[cols="1,1,3"]
+|===
+| Route | Method | Purpose
+
+| `/admin` | GET | Unified dashboard for orders, books, and user monitoring.
+| `/admin/add_book` | POST | Allows Admin to upload a new book with title, price, and stock info.
+| `/admin/logout` | GET | Specific logout route for admin sessions.
+|===
+
+== Session Management
+
+The application tracks the following keys in the Flask `session`:
+
+* `username`: Used to identify the current logged-in user.
+* `user_id`: (Local version) Unique ID of the user.
+* `is_admin`: Boolean flag to grant access to `/admin` routes.
+* `cart`: (AWS version) List of book IDs currently in the shopping cart.

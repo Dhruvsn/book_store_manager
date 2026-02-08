@@ -1,0 +1,43 @@
+= Architecture Overview
+:toc: left
+
+== Introduction
+
+The BookStore Manager is a professional e-commerce platform built with Python (Flask). It features a robust administration dashboard for inventory management and a simplified customer shop experience.
+
+== High-Level Architecture
+
+The project is structured to support two distinct environments:
+
+=== 1. Local Development (`app.py`)
+In this mode, the application runs entirely locally.
+* **Storage**: Python dictionaries are used for `users`, `books`, `carts`, and `orders`.
+* **Persistence**: None. All data is wiped when the server restarts.
+* **Notifications**: Local flash messages only.
+
+=== 2. AWS Production (`aws_app.py`)
+This version is optimized for cloud deployment.
+* **Persistence Layer**: Amazon DynamoDB stores all entities securely.
+* **Infrastructure**: Intended to run on Amazon EC2.
+* **Alerting**: Amazon SNS (Simple Notification Service) triggers alerts for admin on new orders.
+* **IAM Roles**: Requires an IAM instance profile with DynamoDB and SNS access.
+
+== Technology Stack
+
+[cols="1,3"]
+|===
+| Component | Technology
+
+| Backend Framework | Python Flask
+| Cloud Provider | Amazon Web Services (AWS)
+| Persistence | Amazon DynamoDB (NoSQL)
+| Real-time Alerts | Amazon SNS
+| Password Security | Werkzeug Password Hashing
+| UI Components | Jinja2 Templates, Bootstrap 5
+| Media Storage | Local `static/uploads/` directory
+|===
+
+== User Roles
+
+* **Customer**: Can browse books, add to cart, register, and place orders.
+* **Administrator**: Has access to the `/admin` portal to monitor all orders and add new inventory.

@@ -1,0 +1,22 @@
+= BookStore Manager: Project Documentation
+Aryan Angral
+:toc: left
+:toclevels: 3
+:sectnums:
+:icons: font
+
+Welcome to the comprehensive documentation for the BookStore Manager project. This documentation covers both the local development environment and the AWS-cloud integrated production environment.
+
+== Documentation Modules
+
+* xref:architecture.adoc[Architecture Overview] - System design and tech stack.
+* xref:routes_api.adoc[API & Routes Reference] - Detailed Flask route documentation.
+* xref:functions.adoc[Function Reference] - Granular logic and function details.
+* xref:database.adoc[Database Schema] - Storage structure and attribute mapping.
+* xref:frontend.adoc[Frontend & Templates] - UI structure and template roles.
+
+== Overview
+
+The BookStore Manager is a dual-mode E-commerce application:
+1. **Local Mode (`app.py`)**: Uses RAM-based storage (dictionaries) for fast development and testing without AWS dependencies.
+2. **Cloud Mode (`aws_app.py`)**: Designed for AWS EC2, utilizing DynamoDB for persistence and SNS for real-time notifications.

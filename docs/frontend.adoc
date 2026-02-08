@@ -1,0 +1,27 @@
+= Frontend & Templates
+:toc: left
+
+== Introduction
+
+The frontend is built using **Jinja2 Templates** and **Bootstrap 5**, ensuring a responsive and modern interface.
+
+== Template Roles
+
+[cols="1,2"]
+|===
+| File | Role
+
+| `base.html` | The master layout containing the navigation bar and footer. It uses conditional logic to show different menu items based on whether a user or admin is logged in.
+| `home.html` | Landing page providing project info and welcome messages.
+| `index.html` | The main store/catalog. It dynamically renders book cards with "Add to Cart" buttons.
+| `login.html` | Unified login form for all users.
+| `register.html` | Registration form for new customers.
+| `cart.html` | Displays selected items, individual prices, and the grand total for checkout.
+| `orders.html` | A personal history view for customers to see their past purchases.
+| `admin.html` | The restricted management panel. Includes order tracking and the "Add New Book" form.
+|===
+
+== Assets
+
+* **CSS**: Bootstrap 5 is pulled from CDN.
+* **Uploads**: User-uploaded book cover images are served from `/static/uploads/`.

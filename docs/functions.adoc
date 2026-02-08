@@ -1,0 +1,38 @@
+= Function Reference
+:toc: left
+
+== Introduction
+
+A detailed lookup of every function defined in the project's backend.
+
+== Core Functions (`app.py` & `aws_app.py`)
+
+=== Authentication Logic
+* **`register()`**: Handles the parsing of registration forms and hashing passwords using `werkzeug.security`.
+* **`login()`**: Validates user-provided credentials against the storage backend.
+* **`logout()`**: Resets the Flask session.
+
+=== Shop Logic
+* **`home()`**: Renders the landing page. In the local version, it calculates current book and user counts for the UI.
+* **`index()`**: Fetches all available books from storage (dictionary or DynamoDB scan) and renders the catalog.
+* **`add_to_cart(book_id)`**: Handles the addition of items to the session or dictionary cart.
+* **`place_order()`**: 
+** Calculates subtotals.
+** For AWS: Interacts with `ORDER_TABLE` and calls `send_order_notification`.
+** For Local: Updates the `orders` dictionary and increments counters.
+
+== AWS Exclusive Functions (`aws_app.py`)
+
+=== `send_order_notification(username, total)`
+* **Input**: Current username and total amount of the order.
+* **Action**: Publishes a message to the Amazon SNS topic defined by `SNS_TOPIC_ARN`.
+* **Error Handling**: Catches general exceptions to prevent app crashes during SNS delivery failures.
+
+=== `admin_add_book()` (AWS Version)
+* **Image Handling**: Uses `werkzeug.utils.secure_filename` to process uploaded images.
+* **Storage**: Saves images to `static/uploads/` and adds Metadata to DynamoDB.
+
+== Admin Logic
+
+* **`admin_dashboard()`**: aggregator function that scans all tables (Orders, Books, Users in AWS) to provide a unified view for managers.
+* **`add_book()`**: Local version for adding books to the in-memory dictionary.
